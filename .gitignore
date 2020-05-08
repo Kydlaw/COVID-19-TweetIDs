@@ -1,1 +1,5 @@
-*jsonl.gz
+.mypy_cache/
+.pytest_cache/
+.vscode/
+logs/
+twarc.log
