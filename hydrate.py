@@ -29,7 +29,7 @@ data_dirs = ["2020-01", "2020-02", "2020-03", "2020-04", "2020-05"]
 @logger.catch()
 def main():
     # TODO Handle duplicate directories
-    client = mongo_connect("test", "covid19Usc")
+    client = mongo_connect("tweets", "covid19Usc")
     for data_dir in data_dirs:
         for path in Path(data_dir).iterdir():
             if path.name.endswith(".txt"):
@@ -73,7 +73,6 @@ def is_already_processed(log_file, id_file):
     with log_file.open(mode="r+") as f:
         for line in f:
             if str(id_file) in line:
-                logger.info("File already processed, moving to the next")
                 return True
         else:
             f.write(str(id_file))
@@ -87,6 +86,7 @@ def hydrate(id_file, mongo_client, data_dir):
     log_file = verif_log_file_exist(data_dir)
 
     if is_already_processed(log_file, id_file):
+        logger.info("File already processed, moving to the next")
         return
 
     num_ids = raw_newline_count(id_file)
